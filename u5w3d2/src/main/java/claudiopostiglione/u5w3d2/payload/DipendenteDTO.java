@@ -1,7 +1,9 @@
 package claudiopostiglione.u5w3d2.payload;
 
+import claudiopostiglione.u5w3d2.entities.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record DipendenteDTO(
@@ -19,6 +21,8 @@ public record DipendenteDTO(
         String email,
         @NotBlank(message = "La password è obbligatoria")
         @Size(min = 8, max = 20, message = "La password deve avere un minimo di 8 caratteri e un massimo di 20")
-        String password
+        String password,
+        @NotNull(message = "Il ruolo non può essere nullo")
+        Role ruolo
 ) {
 }

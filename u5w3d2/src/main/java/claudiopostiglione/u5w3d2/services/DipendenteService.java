@@ -1,6 +1,7 @@
 package claudiopostiglione.u5w3d2.services;
 
 import claudiopostiglione.u5w3d2.entities.Dipendente;
+import claudiopostiglione.u5w3d2.entities.Role;
 import claudiopostiglione.u5w3d2.exceptions.BadRequestException;
 import claudiopostiglione.u5w3d2.exceptions.IdNotFoundException;
 import claudiopostiglione.u5w3d2.exceptions.NotFoundExcpetion;
@@ -87,6 +88,7 @@ public class DipendenteService {
         dipendenteFound.setUsername(newBody.username());
         dipendenteFound.setEmail(newBody.email());
         dipendenteFound.setImageProfile("https://ui-avatars.com/api/?name=" + newBody.nome() + "+" + newBody.cognome());
+        dipendenteFound.setRole(newBody.ruolo());
 
         Dipendente updateDipendente = this.dipendenteRepository.save(dipendenteFound);
         log.info("Il dipendente " + newBody.nome() + newBody.cognome() + " con ID " + updateDipendente.getId() + " è stato aggiornato correttamente");

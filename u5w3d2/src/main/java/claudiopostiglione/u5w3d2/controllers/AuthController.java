@@ -44,9 +44,4 @@ public class AuthController {
         return this.dipendenteService.saveDipendente(body);
     }
 
-    @GetMapping
-    public Page<Dipendente> getAllDipendenti(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy) {
-        return this.dipendenteService.findAllDipendenti(page, size, sortBy);
-    }
-
 }

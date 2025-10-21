@@ -3,6 +3,7 @@ package claudiopostiglione.u5w3d2.exceptions;
 import claudiopostiglione.u5w3d2.payload.ErrorsDTO;
 import claudiopostiglione.u5w3d2.payload.ErrorsWithListDTO;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -11,6 +12,13 @@ import java.time.LocalDate;
 
 @RestControllerAdvice
 public class ExceptionsHandler extends RuntimeException {
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorsDTO handleAuthorizationDeniedException( AuthorizationDeniedException ex){
+        return  new ErrorsDTO("Non hai i permessi per accedere!", LocalDate.now());
+    }
+
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

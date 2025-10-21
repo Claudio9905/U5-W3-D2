@@ -41,7 +41,7 @@ public class DipendenteController {
     }
 
 
-    // POST http://localhost:3005/dipendenti + payload
+    // POST http://localhost:3001/dipendenti + payload
     @PostMapping
     @PreAuthorize(("hasAuthority('ADMIN')"))
     @ResponseStatus(HttpStatus.CREATED)
@@ -52,28 +52,28 @@ public class DipendenteController {
         return this.dipendenteService.saveDipendente(body);
     }
 
-    // GET  http://localhost:3005/dipendenti
+    // GET  http://localhost:3001/dipendenti
     @GetMapping
     @PreAuthorize(("hasAuthority('ADMIN')"))
     public Page<Dipendente> getAllDipendenti(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy) {
         return this.dipendenteService.findAllDipendenti(page, size, sortBy);
     }
 
-    // GET  http://localhost:3005/dipendenti/{dipendenteId}
+    // GET  http://localhost:3001/dipendenti/{dipendenteId}
     @GetMapping("/{dipendenteId}")
     @ResponseStatus(HttpStatus.FOUND)
     public Dipendente getDipendenteById(@PathVariable UUID dipendenteId) {
         return this.dipendenteService.findDipendenteById(dipendenteId);
     }
 
-    // PUT  http://localhost:3005/dipendenti/{dipendenteId} + payload
+    // PUT  http://localhost:3001/dipendenti/{dipendenteId} + payload
     @PutMapping("/{dipendenteId}")
     @PreAuthorize(("hasAuthority('ADMIN')"))
     public Dipendente getDipendenteByIdAndUpdate(@PathVariable UUID dipendenteId, @RequestBody DipendenteDTO bodyUpdate) {
         return this.dipendenteService.findDipendenteByIdAndUpdate(dipendenteId, bodyUpdate);
     }
 
-    // DELETE http://localhost:3005/dipendenti/{dipendenteId}
+    // DELETE http://localhost:3001/dipendenti/{dipendenteId}
     @DeleteMapping("/{dipendenteId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize(("hasAuthority('ADMIN')"))
@@ -81,7 +81,7 @@ public class DipendenteController {
         this.dipendenteService.findDipendenteByIdAndDelete(dipendenteId);
     }
 
-    //PATCH http://localhost:3005/dipendenti/{dipendenteId}/imageProfile
+    //PATCH http://localhost:3001/dipendenti/{dipendenteId}/imageProfile
     @PatchMapping("/{dipendenteId}/imageProfile")
     @PreAuthorize(("hasAuthority('ADMIN')"))
     public Dipendente uploadImageProfile(@RequestParam("imageProfile") MultipartFile file, @PathVariable UUID dipendenteId) {

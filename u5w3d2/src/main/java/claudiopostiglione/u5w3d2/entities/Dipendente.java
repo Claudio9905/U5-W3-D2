@@ -18,7 +18,7 @@ import java.util.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@JsonIgnoreProperties({"password","authorities", "enable", "accountNotLocked", "accountNotExpired", "credentialsNotExpired"})
+@JsonIgnoreProperties({"password","authorities", "enabled", "accountNonLocked", "accountNonExpired", "credentialsNonExpired"})
 public class Dipendente implements UserDetails {
 
     //Attributi
@@ -37,6 +37,7 @@ public class Dipendente implements UserDetails {
     @Column(name = "Immagine_Profilo")
     private String imageProfile;
     private String password;
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @JsonIgnore

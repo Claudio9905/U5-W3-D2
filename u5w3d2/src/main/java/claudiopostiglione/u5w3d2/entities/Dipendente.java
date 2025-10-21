@@ -1,23 +1,25 @@
 package claudiopostiglione.u5w3d2.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "dipendente")
 @NoArgsConstructor
 @Getter
 @Setter
-
-public class Dipendente {
+@JsonIgnoreProperties({"password","authorities", "enable", "accountNotLocked", "accountNotExpired", "credentialsNotExpired"})
+public class Dipendente implements UserDetails {
 
     //Attributi
     @Id
@@ -35,6 +37,7 @@ public class Dipendente {
     @Column(name = "Immagine_Profilo")
     private String imageProfile;
     private String password;
+    private Role role;
 
     @JsonIgnore
     @OneToMany(mappedBy = "dipendente")
@@ -43,14 +46,25 @@ public class Dipendente {
 
     //Costruttori
     public Dipendente(String nome, String congnome, String username, String email, String password) {
+
+        Random rdm = new Random();
+        String[] roleList = {"ADMIN", "USER"};
+        Role typeRole = Role.valueOf(roleList[rdm.nextInt(0, 2)]);
+
         this.nome = nome;
         this.congnome = congnome;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.role = typeRole;
     }
 
     //Metodi
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(this.role.name()));
+    }
+
 
 
     @Override
@@ -64,4 +78,5 @@ public class Dipendente {
                 " ImageProfile='" + imageProfile + '\'' +
                 "-- |";
     }
+
 }

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,9 +27,10 @@ import java.util.UUID;
 public class DipendenteService {
     @Autowired
     private DipendenteRepository dipendenteRepository;
-
     @Autowired
     private Cloudinary imageUploader;
+    @Autowired
+    private PasswordEncoder bcrypt;
 
     //Questi attributi mi serviranno per controllare alcuni parametri del file
     private static final long MAX_SIZE = 5 * 1024 * 1024; // corrispondono a 5MB
@@ -42,7 +44,7 @@ public class DipendenteService {
             throw new BadRequestException("Attenzione, l'email " + dipendente.getEmail() + " esiste già");
         });
 
-        Dipendente newDipendente = new Dipendente(body.nome(), body.cognome(), body.username(), body.email(), body.password());
+        Dipendente newDipendente = new Dipendente(body.nome(), body.cognome(), body.username(), body.email(), bcrypt.encode(body.password()));
         newDipendente.setImageProfile("https://ui-avatars.com/api/?name=" + body.nome() + "+" + body.cognome());
 
         this.dipendenteRepository.save(newDipendente);

@@ -5,6 +5,7 @@ import claudiopostiglione.u5w3d2.exceptions.UnauthorizedExcpetion;
 import claudiopostiglione.u5w3d2.payload.LoginDTO;
 import claudiopostiglione.u5w3d2.security.JWTTools;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -19,12 +20,14 @@ public class AuthService {
     private DipendenteService dipendenteService;
     @Autowired
     private JWTTools jwtTools;
+    @Autowired
+    private PasswordEncoder bcrypt;
 
     public String CheckAndCreate(LoginDTO bodyLogin){
         // Controllo sulle credenziali: verifico nel DB che esista un utente con qull'email e poi nel caso esista, verifico la password
         Dipendente dipendenteFound = this.dipendenteService.findDipendenteByEmail(bodyLogin.email());
 
-        if(dipendenteFound.getPassword().equals(bodyLogin.password())){
+        if(bcrypt.matches(bodyLogin.password(), dipendenteFound.getPassword())){
             return jwtTools.createToken(dipendenteFound);
         } else {
                 throw new UnauthorizedExcpetion("Credenziali non valide");
